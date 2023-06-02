@@ -1,4 +1,4 @@
-public class LikelihoodUtils {
+public class DiscreteLikelihoodUtils {
 
     public final static int BERNOULLI = 1;
     public final static int BINOMIAL = 2;
@@ -33,7 +33,7 @@ public class LikelihoodUtils {
      *     <li>no values or values out of range.</li>
      * </ul>
      */
-    static double likelihood(int distribution_type, double arg1, Double arg2, int... values) throws IllegalArgumentException{
+    static double discreteLikelihood(int distribution_type, double arg1, Double arg2, int... values) throws IllegalArgumentException{
         if (distribution_type != BERNOULLI && distribution_type != BINOMIAL
                 && distribution_type != GEOMETRIC && distribution_type != POISSON)
             throw new IllegalArgumentException("Invalid distribution type");
@@ -50,7 +50,7 @@ public class LikelihoodUtils {
                 result = binomial(arg1, arg2, values);
             }
             case GEOMETRIC -> result = geometric(arg1, values);
-            case POISSON -> result = poisson();
+            case POISSON -> result = poisson(arg1, values);
             }
         return result;
     }
@@ -84,8 +84,13 @@ public class LikelihoodUtils {
         return result;
     }
 
-    private static double poisson() {
-        return -1;
+    private static double poisson(double rate, int... values) {
+        double result = 1;
+        for (int i : values){
+            if (i < 0) return 0;
+            result *= ((Math.pow(rate, i)/factorial(i))*Math.pow(Math.E, -rate));
+        }
+        return result;
     }
 
     private static int factorial(int num){
