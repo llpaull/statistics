@@ -69,7 +69,7 @@ public class LikelihoodUtils {
         double result = 1;
         for(int i: values){
             // P(X = i) is 0 if i>trials and the rest doesn't matter
-            if (i > trials) return 0;
+            if (i > trials || i<0) return 0;
             result *= (choose((int) trials, i) * Math.pow(probability, i) * Math.pow((1-probability), (trials-i)));
         }
         return result;
