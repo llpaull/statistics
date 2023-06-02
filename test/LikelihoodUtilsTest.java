@@ -17,4 +17,13 @@ class LikelihoodUtilsTest {
     @Test
     void testBinomialLikelihood(){
     }
+
+    @Test
+    void testGeometricLikelihood(){
+    }
+
+    @Test
+    void testPoissonLikelihood(){
+    }
+
 }
