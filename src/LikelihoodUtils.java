@@ -39,7 +39,7 @@ public class LikelihoodUtils {
             throw new IllegalArgumentException("Invalid distribution type");
 
         if (arg1 < 0) throw new IllegalArgumentException("arg1 must not be <0");
-        if (values.length == 0) throw new IllegalArgumentException("values must not be empty");
+        if (values == null || values.length == 0) throw new IllegalArgumentException("values must not be empty or null");
 
         double result = 0;
         switch(distribution_type){
@@ -49,7 +49,7 @@ public class LikelihoodUtils {
                 if (arg1 % 1 != 0) throw new IllegalArgumentException("arg1 must be a whole number");
                 result = binomial(arg1, arg2, values);
             }
-            case GEOMETRIC -> result = geometric();
+            case GEOMETRIC -> result = geometric(arg1, values);
             case POISSON -> result = poisson();
             }
         return result;
@@ -59,8 +59,8 @@ public class LikelihoodUtils {
         double result = 1;
         for(int i: values){
             if (i != 0 && i != 1) return 0;
-            if (i == 1) result*= probability;
-            else result*= (1-probability);
+            if (i == 1) result *= probability;
+            else result *= (1-probability);
         }
         return result;
     }
@@ -75,8 +75,13 @@ public class LikelihoodUtils {
         return result;
     }
 
-    private static double geometric() {
-        return -1;
+    private static double geometric(double probability, int... values) {
+        double result = 1;
+        for (int i : values){
+            if (i < 1) return 0;
+            result *= (probability * Math.pow((1-probability), (i-1)));
+        }
+        return result;
     }
 
     private static double poisson() {
