@@ -1,9 +1,12 @@
 public class DiscreteLikelihoodUtils {
 
-    public final static int BERNOULLI = 1;
-    public final static int BINOMIAL = 2;
-    public final static int GEOMETRIC = 3;
-    public final static int POISSON = 4;
+    enum Distribution{
+        BERNOULLI,
+        BINOMIAL,
+        GEOMETRIC,
+        POISSON
+    }
+
 
     /**
      * calculates the likelihood of discrete distributions
@@ -33,15 +36,14 @@ public class DiscreteLikelihoodUtils {
      *     <li>no values or values out of range.</li>
      * </ul>
      */
-    static double discreteLikelihood(int distribution_type, double arg1, Double arg2, int... values) throws IllegalArgumentException{
-        if (distribution_type != BERNOULLI && distribution_type != BINOMIAL
-                && distribution_type != GEOMETRIC && distribution_type != POISSON)
-            throw new IllegalArgumentException("Invalid distribution type");
+    static double discreteLikelihood(Distribution distribution_type, double arg1, Double arg2, int... values) throws IllegalArgumentException{
+        if (distribution_type == null)
+            throw new IllegalArgumentException("distribution type must not be null");
 
         if (arg1 < 0) throw new IllegalArgumentException("arg1 must not be <0");
         if (values == null || values.length == 0) throw new IllegalArgumentException("values must not be empty or null");
 
-        double result = 0;
+        double result = -1;
         switch(distribution_type){
             case BERNOULLI -> result = bernoulli(arg1, values);
             case BINOMIAL -> {
@@ -51,7 +53,7 @@ public class DiscreteLikelihoodUtils {
             }
             case GEOMETRIC -> result = geometric(arg1, values);
             case POISSON -> result = poisson(arg1, values);
-            }
+        }
         return result;
     }
 
