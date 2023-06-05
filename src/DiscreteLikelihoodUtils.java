@@ -1,16 +1,9 @@
 public class DiscreteLikelihoodUtils {
 
-    enum Distribution{
-        BERNOULLI,
-        BINOMIAL,
-        GEOMETRIC,
-        POISSON
-    }
-
 
     /**
      * calculates the likelihood of discrete distributions
-     * @param distribution_type the type of discrete distribution to use, can be either:
+     * @param distributionType the type of discrete distribution to use, can be either:
      * <ul>
      *     <li>BER(p)</li>
      *     <li>BIN(n,p)</li>
@@ -36,15 +29,15 @@ public class DiscreteLikelihoodUtils {
      *     <li>no values or values out of range.</li>
      * </ul>
      */
-    static double discreteLikelihood(Distribution distribution_type, double arg1, Double arg2, int... values) throws IllegalArgumentException{
-        if (distribution_type == null)
+    static double discreteLikelihood(Distribution.Discrete distributionType, double arg1, Double arg2, int... values) throws IllegalArgumentException{
+        if (distributionType == null)
             throw new IllegalArgumentException("distribution type must not be null");
 
         if (arg1 < 0) throw new IllegalArgumentException("arg1 must not be <0");
         if (values == null || values.length == 0) throw new IllegalArgumentException("values must not be empty or null");
 
         double result = -1;
-        switch(distribution_type){
+        switch(distributionType){
             case BERNOULLI -> result = bernoulli(arg1, values);
             case BINOMIAL -> {
                 if (arg2 == null || arg2 < 0) throw new IllegalArgumentException("arg2 must not be null or <0");
